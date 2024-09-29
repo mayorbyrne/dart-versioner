@@ -1,2 +1,3 @@
-A sample command-line application with an entrypoint in `bin/`, library code
-in `lib/`, and example unit test in `test/`.
+## Dart_Versioner
+
+A utility to auto-increment a pubspec.yaml, similar to `npm version`.
