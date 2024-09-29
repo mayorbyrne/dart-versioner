@@ -1,6 +1,6 @@
 name: dart_versioner
 description: A utility to auto-increment a pubspec.yaml, similar to "npm version"
-version: 1.0.0
+version: 1.1.0
 repository: https://github.com/mayorbyrne/dart-versioner
 
 environment:
@@ -13,3 +13,6 @@ dependencies:
 dev_dependencies:
   lints: ^2.0.0
   test: ^1.21.0
+
+executables:
+  dart_versioner:
