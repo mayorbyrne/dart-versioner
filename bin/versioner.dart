@@ -3,7 +3,7 @@ import 'package:pub_semver/pub_semver.dart';
 import 'dart:io';
 
 void main(List<String> args) {
-  File('./pubspec.yaml').readAsString().then((String contents) {
+  File('./pubspec.yaml').readAsString().then((String contents) async {
     Pubspec pubspec = Pubspec.parse(contents);
     Version version = pubspec.version ?? Version(0, 0, 0);
     String incType = (args.isEmpty ? "major" : args[0]).toLowerCase();
@@ -26,6 +26,30 @@ void main(List<String> args) {
 
     File('./pubspec.yaml').writeAsStringSync(contents);
 
-    print("v${Version(major, minor, patch)}");
+    await _addPubspec();
+    await _gitCommit("v$major.$minor.$patch");
+
+    print("Done");
   });
+}
+
+Future<void> _addPubspec() async {
+  print('Adding pubspec.yaml to git');
+  print('============');
+  await _execute("git", ["add", "./pubspec.yaml"]);
+}
+
+Future<void> _gitCommit(String msg) async {
+  print("Committing with msg: $msg");
+  print('============');
+  await _execute("git", ["commit", "-m", msg]);
+}
+
+Future<void> _execute(String executable, List<String> arguments) async {
+  final process = await Process.start(executable, arguments, runInShell: true);
+  await stdout.addStream(process.stdout);
+  await stderr.addStream(process.stderr);
+  final exitCode = await process.exitCode;
+  print('============');
+  print('Exit code: $exitCode');
 }
