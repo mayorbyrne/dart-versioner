@@ -1,5 +1,5 @@
 import "package:test/test.dart";
-import 'package:versioner/versioner.dart' as versioner;
+import 'package:dart_versioner/dart_versioner.dart' as versioner;
 
 void main() {
   test("versioner", () {
