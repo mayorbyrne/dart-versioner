@@ -17,3 +17,8 @@ Where `[type]` is one of `major`, `minor`, or `patch`.
   - `patch` will increment the patch version number.
 
 The program will automatically increment the pubspec.yaml version number, and also automatically commit the change to git with the new version number as the commit message.
+
+TODO:
+
+- [ ] Make sure the git working directory is clean, else bail
+- [ ] Make the output a little nicer
