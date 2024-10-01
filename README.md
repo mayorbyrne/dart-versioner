@@ -20,5 +20,7 @@ The program will automatically increment the pubspec.yaml version number, and al
 
 TODO:
 
-- [ ] Make sure the git working directory is clean, else bail
-- [ ] Make the output a little nicer
+- [x] Make sure the git working directory is clean, else bail
+- [x] Make the output a little nicer
+- [ ] Add an option for a custom git commit message
+- [ ] Handle custom version number
