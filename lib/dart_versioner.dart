@@ -33,19 +33,15 @@ Future<void> incrementVersion(List<String> args) async {
     await _addPubspec();
     await _gitCommit("v$major.$minor.$patch");
 
-    print("Done");
+    print("v$major.$minor.$patch");
   });
 }
 
 Future<void> _addPubspec() async {
-  print('Adding pubspec.yaml to git');
-  print('============');
   await _execute("git", ["add", "./pubspec.yaml"]);
 }
 
 Future<void> _gitCommit(String msg) async {
-  print("Committing with msg: $msg");
-  print('============');
   await _execute("git", ["commit", "-m", msg]);
 }
 
@@ -54,8 +50,6 @@ Future<void> _execute(String executable, List<String> arguments) async {
   await stdout.addStream(process.stdout);
   await stderr.addStream(process.stderr);
   final exitCode = await process.exitCode;
-  print('============');
-  print('Exit code: $exitCode');
 }
 
 Future<void> _requireCleanWorkTree() async {
