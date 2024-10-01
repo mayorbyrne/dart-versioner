@@ -46,10 +46,7 @@ Future<void> _gitCommit(String msg) async {
 }
 
 Future<void> _execute(String executable, List<String> arguments) async {
-  final process = await Process.start(executable, arguments, runInShell: true);
-  await stdout.addStream(process.stdout);
-  await stderr.addStream(process.stderr);
-  final exitCode = await process.exitCode;
+  await Process.start(executable, arguments, runInShell: true);
 }
 
 Future<void> _requireCleanWorkTree() async {
