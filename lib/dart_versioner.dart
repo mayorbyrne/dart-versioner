@@ -2,7 +2,11 @@ import 'package:pubspec_parse/pubspec_parse.dart';
 import 'package:pub_semver/pub_semver.dart';
 import 'dart:io';
 
-void incrementVersion(List<String> args) {
+Future<void> incrementVersion(List<String> args) async {
+  // Check if the working tree is clean
+  // If not, exit with an error
+  await _requireCleanWorkTree();
+
   File('./pubspec.yaml').readAsString().then((String contents) async {
     Pubspec pubspec = Pubspec.parse(contents);
     Version version = pubspec.version ?? Version(0, 0, 0);
@@ -54,3 +58,32 @@ Future<void> _execute(String executable, List<String> arguments) async {
   print('Exit code: $exitCode');
 }
 
+Future<void> _requireCleanWorkTree() async {
+  int err = 0;
+
+  // Update the index
+  ProcessResult process = await Process.run('git', ["update-index", "--ignore-submodules", "--refresh"], runInShell: true);
+
+  // Disallow unstaged changes in the working tree
+  process = await Process.run('git', ["diff-files", "--ignore-submodules", "--"], runInShell: true);
+  String? response = process.stdout;
+
+  if (response != null && response.isNotEmpty) {
+    err = 1;
+    print("Cannot increment version: You have unstaged changes in the working tree.");
+  }
+
+  // Disallow uncommitted changes in the index
+  process = await Process.run('git', ["diff-index", "--cached", "HEAD", "--ignore-submodules", "--"], runInShell: true);
+  response = process.stdout;
+
+  if (response != null && response.isNotEmpty) {
+    err = 1;
+    print("Cannot increment version: Your index contains uncommitted changes.");
+  }
+
+  if (err == 1) {
+    print("Please commit or stash them.");
+    exit(1);
+  }
+}
